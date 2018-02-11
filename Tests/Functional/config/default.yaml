@@ -1,0 +1,4 @@
+imports:
+    - { resource: framework.yaml }
+    - { resource: doctrine.yaml }
+    - { resource: twig.yaml }

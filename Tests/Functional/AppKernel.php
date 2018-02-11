@@ -2,17 +2,6 @@
 
 namespace JMS\JobQueueBundle\Tests\Functional;
 
-// Set-up composer auto-loading if Client is insulated.
-call_user_func(function() {
-    if ( ! is_file($autoloadFile = __DIR__.'/../../vendor/autoload.php')) {
-        throw new \LogicException('The autoload file "vendor/autoload.php" was not found. Did you run "composer install --dev"?');
-    }
-
-    require_once $autoloadFile;
-});
-
-\Doctrine\Common\Annotations\AnnotationRegistry::registerLoader('class_exists');
-
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
@@ -44,11 +33,9 @@ class AppKernel extends Kernel
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \JMS\AopBundle\JMSAopBundle(),
-            new \JMS\DiExtraBundle\JMSDiExtraBundle($this),
 
-            new \JMS\JobQueueBundle\Tests\Functional\TestBundle\TestBundle(),
             new \JMS\JobQueueBundle\JMSJobQueueBundle(),
+            new \JMS\JobQueueBundle\Tests\Functional\TestBundle\TestBundle(),
         );
     }
 

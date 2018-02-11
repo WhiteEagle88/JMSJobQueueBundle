@@ -57,8 +57,6 @@ class RunCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareC
     /** @var bool */
     private $shouldShutdown = false;
 
-    private $consoleFile;
-
     protected function configure()
     {
         $this
@@ -81,7 +79,7 @@ class RunCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareC
         }
 
         if ($maxRuntime > 600) {
-            $maxRuntime += mt_rand(-120, 120);
+            $maxRuntime += random_int(-120, 120);
         }
 
         $maxJobs = (integer) $input->getOption('max-concurrent-jobs');
@@ -397,7 +395,7 @@ class RunCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareC
                 continue;
             }
 
-            $args = $this->getCommandLineArgs();
+            $args = $this->getBasicCommandLineArgs();
             $args[] = 'jms-job-queue:mark-incomplete';
             $args[] = $job->getId();
 
@@ -415,7 +413,7 @@ class RunCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareC
     {
         $args = array(
             PHP_BINARY,
-            $_SERVER['argv'][0],
+            $this->findConsoleFile(),
             '--env='.$this->env
         );
 
@@ -440,5 +438,20 @@ class RunCommand extends \Symfony\Bundle\FrameworkBundle\Command\ContainerAwareC
     private function getRepository()
     {
         return $this->getEntityManager()->getRepository('JMSJobQueueBundle:Job');
+    }
+
+    private function findConsoleFile()
+    {
+        $kernelDir = $this->getContainer()->getParameter('kernel.root_dir');
+
+        if (file_exists($kernelDir.'/console')) {
+            return $kernelDir.'/console';
+        }
+
+        if (file_exists($kernelDir.'/../bin/console')) {
+            return $kernelDir.'/../bin/console';
+        }
+
+        throw new \RuntimeException('Could not locate console file.');
     }
 }

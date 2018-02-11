@@ -23,7 +23,7 @@ class CronTest extends BaseTestCase
 
     protected function setUp()
     {
-        $this->createClient(array('config' => 'persistent_db.yml'));
+        $this->createClient(array('config' => 'persistent_db.yaml'));
 
         if (is_file($databaseFile = self::$kernel->getCacheDir().'/database.sqlite')) {
             unlink($databaseFile);

@@ -58,9 +58,9 @@ class ConcurrencyTest extends BaseTestCase
         $this->databaseFile = tempnam(sys_get_temp_dir(), 'db');
         $this->configFile = tempnam(sys_get_temp_dir(), 'di-cfg');
         unlink($this->configFile);
-        $this->configFile .= '.yml';
+        $this->configFile .= '.yaml';
 
-        $persistentDbConfig = __DIR__.'/config/persistent_db.yml';
+        $persistentDbConfig = __DIR__ . '/config/persistent_db.yaml';
         file_put_contents($this->configFile, <<<CONFIG
 imports:
     - { resource: "{$persistentDbConfig}" }

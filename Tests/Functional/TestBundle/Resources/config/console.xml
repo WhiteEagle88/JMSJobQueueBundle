@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" />
+
+        <service id="jms_job_queue_test.command.logging" class="JMS\JobQueueBundle\Tests\Functional\TestBundle\Command\LoggingCommand">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="jms_job_queue_test.command.never_ending" class="JMS\JobQueueBundle\Tests\Functional\TestBundle\Command\NeverEndingCommand">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="jms_job_queue_test.command.scheduled_every_few_seconds" class="JMS\JobQueueBundle\Tests\Functional\TestBundle\Command\ScheduledEveryFewSecondsCommand">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="jms_job_queue_test.command.sometimes_failing" class="JMS\JobQueueBundle\Tests\Functional\TestBundle\Command\SometimesFailingCommand">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="jms_job_queue_test.command.successful" class="JMS\JobQueueBundle\Tests\Functional\TestBundle\Command\SuccessfulCommand">
+            <tag name="console.command"/>
+        </service>
+
+        <service id="jms_job_queue_test.command.throws_exception" class="JMS\JobQueueBundle\Tests\Functional\TestBundle\Command\ThrowsExceptionCommand">
+            <tag name="console.command"/>
+        </service>
+    </services>
+</container>

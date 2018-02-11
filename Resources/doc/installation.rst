@@ -58,7 +58,7 @@ Enabling the Webinterface
 If you also want to use the webinterface where you can view the outputs, and
 exception stack traces for your jobs, you need to add the following to your
 
-``routing.yml``:
+``routing.yaml``:
 
 .. code-block :: yaml
 

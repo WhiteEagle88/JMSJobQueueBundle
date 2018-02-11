@@ -6,6 +6,8 @@ use JMS\JobQueueBundle\Tests\Functional\TestBundle\Entity\Train;
 
 use JMS\JobQueueBundle\Tests\Functional\TestBundle\Entity\Wagon;
 
+use PHPUnit\Framework\Constraint\LogicalNot;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\ORM\EntityManager;
 use JMS\JobQueueBundle\Entity\Repository\JobRepository;
@@ -22,6 +24,9 @@ class JobRepositoryTest extends BaseTestCase
 
     /** @var EventDispatcher */
     private $dispatcher;
+
+    /** @var RegistryInterface */
+    private $registry;
 
     public function testGetOne()
     {
@@ -227,10 +232,10 @@ class JobRepositoryTest extends BaseTestCase
             ->with('jms_job_queue.job_state_change', new StateChangeEvent($a, 'failed'));
         $this->dispatcher->expects($this->at(1))
             ->method('dispatch')
-            ->with('jms_job_queue.job_state_change', new \PHPUnit_Framework_Constraint_Not($this->equalTo(new StateChangeEvent($a, 'failed'))));
+            ->with('jms_job_queue.job_state_change', new LogicalNot($this->equalTo(new StateChangeEvent($a, 'failed'))));
         $this->dispatcher->expects($this->at(2))
             ->method('dispatch')
-            ->with('jms_job_queue.job_state_change', new \PHPUnit_Framework_Constraint_Not($this->equalTo(new StateChangeEvent($a, 'failed'))));
+            ->with('jms_job_queue.job_state_change', new LogicalNot($this->equalTo(new StateChangeEvent($a, 'failed'))));
 
         $this->assertCount(0, $a->getRetryJobs());
         $this->repo->closeJob($a, 'failed');
@@ -289,9 +294,15 @@ class JobRepositoryTest extends BaseTestCase
         $this->createClient();
         $this->importDatabaseSchema();
 
-        $this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->dispatcher = $this->createMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->registry = $this->createMock('Symfony\Bridge\Doctrine\RegistryInterface');
         $this->em = self::$kernel->getContainer()->get('doctrine')->getManagerForClass('JMSJobQueueBundle:Job');
+        $this->registry
+            ->method('getManagerForClass')
+            ->with('JMS\JobQueueBundle\Entity\Job')
+            ->willReturn($this->em);
         $this->repo = $this->em->getRepository('JMSJobQueueBundle:Job');
+        $this->repo->setRegistry($this->registry);
         $this->repo->setDispatcher($this->dispatcher);
     }
 }

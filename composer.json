@@ -15,7 +15,9 @@
         "php": "^7.1",
         "symfony/framework-bundle": "^4.0",
         "symfony/debug": "^4.0",
-        "doctrine/common": "^2.3"
+        "doctrine/common": "^2.3",
+        "symfony/security-csrf": "^4.0",
+        "symfony/templating": "^4.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "*",
@@ -31,8 +33,9 @@
         "symfony/twig-bundle": "*",
         "symfony/form": "*",
         "symfony/validator": "*",
-        "phpunit/phpunit": "^5.2",
-        "symfony/intl": "*"
+        "phpunit/phpunit": "^6.5",
+        "symfony/intl": "*",
+        "phpdocumentor/reflection-common": "^1.0"
     },
     "suggest": {
         "sensio/framework-extra-bundle": "Required when using the webinterface.",
